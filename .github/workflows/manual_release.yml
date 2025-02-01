@@ -87,7 +87,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: sdk
-          key: openwrt-sdk-snapshot-qualcommax
+          key: openwrt-sdk-qualcommax-ipq807x
 
       - name: Initialization environment
         #if: steps.cache-sdk.outputs.cache-hit != 'true'
