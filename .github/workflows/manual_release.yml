@@ -59,7 +59,7 @@ jobs:
           echo "has_update: ${has_update}"
 
       - name: Generate new tag & release
-        #if: steps.check_version.outputs.has_update == 'true'
+        if: steps.check_version.outputs.has_update == 'true'
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,8 +70,8 @@ jobs:
 
   job_build_argon:
     name: Build Argon (master)
-    #needs: job_check
-    #if: needs.job_check.outputs.has_update == 'true'
+    needs: job_check
+    if: needs.job_check.outputs.has_update == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Install packages
@@ -90,9 +90,9 @@ jobs:
           key: openwrt-sdk-qualcommax-ipq807x
 
       - name: Initialization environment
-        #if: steps.cache-sdk.outputs.cache-hit != 'true'
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
         env:
-          url_sdk: https://mirror-03.infra.openwrt.org/snapshots/targets/qualcommax/ipq807x/openwrt-sdk-qualcommax-ipq807x_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+          url_sdk: https://downloads.openwrt.org/snapshots/targets/qualcommax/ipq807x/openwrt-sdk-qualcommax-ipq807x_gcc-13.3.0_musl.Linux-x86_64.tar.zst
         run: |
           wget ${{ env.url_sdk }}
           file_name=$(echo ${{env.url_sdk}} | awk -F/ '{print $NF}')
